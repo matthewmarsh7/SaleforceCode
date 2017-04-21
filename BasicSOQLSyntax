@@ -1,4 +1,4 @@
-//This is the syntax of a basic SOQL query:
+//This is the syntax of a basic SOQL query:this is done in the Query Editor in the Developer Console 
 
 SELECT fields FROM ObjectName [WHERE Condition]
 
