@@ -1,4 +1,4 @@
-// Add account and related contact
+// Add account and related contact. Performed in the Dev Console>Execute Anonymous window 
 Account acct = new Account(
     Name='SFDC Computing',
     Phone='(415)555-1212',
