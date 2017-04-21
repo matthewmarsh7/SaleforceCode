@@ -1,0 +1,12 @@
+//This is the syntax of a basic SOQL query:
+
+SELECT fields FROM ObjectName [WHERE Condition]
+
+//The WHERE clause is optional. Let’s start with a very simple query. 
+For example, the following query retrieves accounts and gets two fields for each 
+account: the ID and the Phone.
+
+SELECT Name,Phone FROM Account
+
+
+
