@@ -8,5 +8,87 @@ account: the ID and the Phone.
 
 SELECT Name,Phone FROM Account
 
+//This is another example with a more complex condition. This query returns all SFDC Computing accounts, or 
+all accounts with more than 25 employees whose billing city is Los Angeles.
+
+SELECT Name,Phone FROM Account WHERE (Name='SFDC Computing' OR (NumberOfEmployees>25 AND BillingCity='Los Angeles'))
+
+//When a query executes, it returns records from Salesforce in no particular order, so you can’t rely on the order of records in the
+returned array to be the same each time the query is run. You can however choose to sort the returned record set by adding an 
+ORDER BY clause and specifying the field by which the record set should be sorted. This example sorts all retrieved accounts 
+based on the Name field.
+
+SELECT Name,Phone FROM Account ORDER BY Name
+
+//You can limit the number of records returned to an arbitrary number by adding the LIMIT n clause where n is the number of records you want returned. Limiting the result set is handy when you don’t care which records are returned, but you just want to work with a subset of records. For example, this query retrieves the first account that is returned. Notice that the returned value is one account and not an array when using LIMIT 1.
+
+Account oneAccountOnly = [SELECT Name,Phone FROM Account LIMIT 1];
+
+//You can combine the optional clauses in one query, in the following order:
+
+SELECT Name,Phone FROM Account 
+                   WHERE (Name = 'SFDC Computing' AND NumberOfEmployees>25)
+                   ORDER BY Name
+                   LIMIT 10
+                   
+//Execute the following SOQL query in Apex by using the Execute Anonymous window in the Developer Console. Then inspect the debug statements in the debug log. One sample account should be returned.
+
+Account[] accts = [SELECT Name,Phone FROM Account 
+                   WHERE (Name='SFDC Computing' AND NumberOfEmployees>25)
+                   ORDER BY Name
+                   LIMIT 10];
+System.debug(accts.size() + ' account(s) returned.');
+// Write all account array info
+System.debug(accts);
+
+//SOQL statements in Apex can reference Apex code variables and expressions if they are preceded by a colon (:). The use of a local variable within a SOQL statement is called a bind.
+
+String targetDepartment = 'Wingo';
+Contact[] techContacts = [SELECT FirstName,LastName 
+                          FROM Contact WHERE Department=:targetDepartment];
+                          
+//This is an example of a SOSL query that searches for accounts and contacts that have any fields with the word 'SFDC'.
+
+List<List<SObject>> searchList = [FIND 'SFDC' IN ALL FIELDS 
+                                      RETURNING Account(Name), Contact(FirstName,LastName)];
+                                      
+//This example returns all the sample accounts because they each have a field containing one of the words. The SOSL search results are returned in a list of lists. Each list contains an array of the returned records. In this case, the list has two elements. At index 0, the list contains the array of accounts. At index 1, the list contains the array of contacts.
+ 
+ List<List<sObject>> searchList = [FIND 'Wingo OR SFDC' IN ALL FIELDS 
+                   RETURNING Account(Name),Contact(FirstName,LastName,Department)];
+Account[] searchAccounts = (Account[])searchList[0];
+Contact[] searchContacts = (Contact[])searchList[1];
+
+System.debug('Found the following accounts.');
+for (Account a : searchAccounts) {
+    System.debug(a.Name);
+}
+
+System.debug('Found the following contacts.');
+for (Contact c : searchContacts) {
+    System.debug(c.LastName + ', ' + c.FirstName);
+}
+                          
+//Trigger Syntax
+The syntax of a trigger definition is different from a class definition’s syntax. A trigger definition starts with the trigger keyword.
+To execute a trigger before or after insert, update, delete, and undelete operations, specify multiple trigger events in a comma-separated list. The events you can specify are:
+before insert
+before update
+before delete
+after insert
+after update
+after delete
+after undelete
+It is then followed by the name of the trigger, the Salesforce object that the trigger is associated with, and the conditions under which it fires. A trigger has the following syntax:
+
+trigger TriggerName on ObjectName (trigger_events) {
+   code_block
+}
+
+
+
+
+
+
 
 
