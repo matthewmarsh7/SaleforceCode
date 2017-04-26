@@ -1,0 +1,47 @@
+//Basic Call for an account page while adding larger grain details and getting specific records
+
+<apex:page standardController="Account">
+   
+     
+    
+     <apex:pageBlock title="Account Details">
+         <apex:pageBlockSection>
+    		<apex:outputField value="{! account.Name }"/> <br/>
+    		<apex:outputField value="{! account.Phone }"/> <br/>
+    		<apex:outputField value="{! account.Industry }"/> <br/>
+    		<apex:outputField value="{! account.AnnualRevenue }"/> <br/>
+         </apex:pageBlockSection>
+     </apex:pageBlock>
+    
+     <apex:pageBlock title="Contacts">
+        <apex:pageBlockTable value="{!Account.contacts}" var="contact">
+            <apex:column value="{!contact.Name}"/>
+            <apex:column value="{!contact.Title}"/>
+            <apex:column value="{!contact.Phone}"/>
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+    
+    
+     </apex:page>
+     
+     *********************************************************************************************
+     
+     //Input Data using forms 
+     
+     <apex:page standardController="Account">
+    
+    <h1>
+        Edit Account
+    </h1>
+    
+    <apex:form>
+    
+    <apex:inputField value="{!account.name}"/>
+        
+        <apex:commandButton action="{!save}" value="Save" />
+    
+    </apex:form>
+    
+    
+</apex:page>
+     
