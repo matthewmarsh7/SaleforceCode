@@ -44,4 +44,169 @@
     
     
 </apex:page>
+
+
+****************************************************************************************************************
+
+//Editing data fields using the controller, and also a way to link to objects that cant be edited from within that specific controller
+
+<apex:page standardController="Account">
+    
+    <apex:pageBlock>
+    
+    <h1> Edit Account </h1> 
+    <br/>
+    <h2> This time in finer detail </h2>
+    <br/>
+    <p>
+        I hope this comes out as a non bold text
+    </p>
+        </apex:pageBlock>
+    
+    <apex:pageMessages> </apex:pageMessages>
+    
+    <apex:form>
+        
+   <apex:pageBlock title="Edit Account">
+        <apex:pageBlockSection columns="1">
+             <apex:inputField value="{! Account.Name }"/>
+            <apex:inputField value="{! Account.Phone }"/>        
+            <apex:inputField value="{! Account.Industry }"/>        
+            <apex:inputField value="{! Account.AnnualRevenue }"/>
+         </apex:pageBlockSection>
+            
+     <apex:pageBlockSection>
+        <apex:commandButton action="{!save}" value="Save" />
+     </apex:pageBlockSection>
+ </apex:pageBlock>
+        
+ <apex:pageBlock title="Contacts">
+    <apex:pageBlockTable value="{!Account.contacts}" var="contact">
+        <apex:column>
+            <apex:outputLink
+                value="{! URLFOR($Action.Contact.Edit, contact.Id) }">
+                Edit
+            </apex:outputLink>
+            &nbsp;
+            <apex:outputLink
+                value="{! URLFOR($Action.Contact.Delete, contact.Id) }">
+                Del
+            </apex:outputLink>
+        </apex:column>
+        <apex:column value="{!contact.Name}"/>
+        <apex:column value="{!contact.Title}"/>
+        <apex:column value="{!contact.Phone}"/>
+    </apex:pageBlockTable>
+</apex:pageBlock>
+</apex:form>
+</apex:page>
      
+***********************************************************************************************
+
+//EXAMPLE OF A STANDARD LIST CONTROLLER (this example returns two lists)
+
+<apex:page standardController="Contact" recordSetVar="contacts">
+    <apex:pageBlock title="Contacts List">
+        
+        <!-- Contacts List -->
+        <apex:pageBlockTable value="{! contacts }" var="ct">
+            <apex:column value="{! ct.FirstName }"/>
+            <apex:column value="{! ct.LastName }"/>
+            <apex:column value="{! ct.Email }"/>
+            <apex:column value="{! ct.Account.Name }"/>
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+    <apex:pageBlock title="Contacts Phone Info">
+        
+        <!-- Contacts List -->
+        <apex:pageBlockTable value="{! contacts }" var="ct">
+            <apex:column value="{! ct.phone }"/>
+            <apex:column value="{! ct.fax }"/>
+        </apex:pageBlockTable>
+        
+    </apex:pageBlock>
+</apex:page>
+
+
+************************************************************************************************
+
+//This example makes table from an object, and also adds some ajax code and page scrollability
+
+<apex:page standardController="Contact" recordSetVar="contacts">
+    <apex:form >
+    
+        <apex:pageBlock title="Contacts List" id="contacts_list">
+        
+        Filter: 
+		<apex:selectList value="{! filterId }" size="1">
+    		<apex:selectOptions value="{! listViewOptions }"/>
+    		<apex:actionSupport event="onchange" reRender="contacts_list"/>
+		</apex:selectList>
+        
+        <!-- Contacts List -->
+        <apex:pageBlockTable value="{! contacts }" var="ct">              
+            <apex:column value="{! ct.FirstName }"/>
+            <apex:column value="{! ct.LastName }"/>
+            <apex:column value="{! ct.Email }"/>
+            <apex:column value="{! ct.Account.Name }"/>
+        </apex:pageBlockTable>
+            
+            <!-- Pagination -->
+				<table style="width: 100%"><tr>
+
+    			<td>
+        		Page: <apex:outputText value=" {!PageNumber} of {! CEILING(ResultSize / PageSize) }"/>
+    			</td>            
+
+    			<td align="center">
+        		<!-- Previous page -->
+				<!-- active -->
+				<apex:commandLink action="{! Previous }" value="« Previous"
+    			 rendered="{! HasPrevious }"/>
+				<!-- inactive (no earlier pages) -->
+				<apex:outputText style="color: #ccc;" value="« Previous"
+     			rendered="{! NOT(HasPrevious) }"/>
+
+				&nbsp;&nbsp;  
+
+				<!-- Next page -->
+				<!-- active -->
+				<apex:commandLink action="{! Next }" value="Next »"
+     			rendered="{! HasNext }"/>
+				<!-- inactive (no more pages) -->
+				<apex:outputText style="color: #ccc;" value="Next »"
+     			rendered="{! NOT(HasNext) }"/>
+    			</td>
+    
+    			<td align="right">
+        		Records per page:
+				<apex:selectList value="{! PageSize }" size="1">
+    			<apex:selectOption itemValue="5" itemLabel="5"/>
+    			<apex:selectOption itemValue="20" itemLabel="20"/>
+    			<apex:actionSupport event="onchange" reRender="contacts_list"/>
+				</apex:selectList>
+    			</td>
+
+				</tr></table>
+
+        </apex:pageBlock>
+
+    </apex:form>
+    
+</apex:page>
+
+***********************************************************************************************
+//A how to add a picture of a litte kitty cat. Use static object loader to get file attached to salesforce first. 
+
+<apex:pageBlock title="Pic">
+        	<apex:pageBlockSection>
+    				<apex:image  value="{!URLFOR($Resource.vfimagetest, 'cats/kitten1.jpg')}"/>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+        
+************************************************************************************************
+
+
+
+
