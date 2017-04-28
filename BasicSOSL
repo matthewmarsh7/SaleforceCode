@@ -1,0 +1,30 @@
+Basic SOSL 
+
+//imply specify that object in the request. It’s just that easy..
+
+FIND {term} RETURNING ObjectTypeName
+
+FIND {march 2016 email} RETURNING Campaign
+
+//Luckily, adding another object is super simple in SOSL. Just add a comma-separated list.
+
+FIND {term} RETURNING ObjectTypeName1, ObjectTypeName2, ObjectTypeNameYouGetTheIdea
+
+FIND {recycled materials} RETURNING Product2, ContentVersion, FeedItem
+
+//Search Within Custom Objects
+
+FIND {pink hi\-top} RETURNING Merchandise__c
+
+//Create Efficient Text Searches
+
+FIND {jsmith@cloudkicks.com} IN EMAIL FIELDS RETURNING Contact
+
+FIND {Cloud Kicks} RETURNING Account (Name, Industry ORDER BY Name LIMIT 10 OFFSET 25)
+
+
+
+
+
+
+
