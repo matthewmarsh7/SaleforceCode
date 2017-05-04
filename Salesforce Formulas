@@ -1,0 +1,11 @@
+//The validation rule should be on the Case object.
+//The validation rule should be named 'Mark_as_Escalated'.
+//The validation rule should fire if someone tries to set a case as escalated and it is closed, closed when created, or does not have a priority of High.
+//The validation rule should display the error message 'You can only set a case as escalated if it is high priority and not closed' under the Escalated field when triggered.
+//Add the 'Escalated' field to the Case page layout.
+
+IsEscalated=TRUE&&
+(NOT(ISPICKVAL(Priority, "High"))) ||
+(ISPICKVAL(Status, "Closed")) ||
+(IsClosedOnCreate=True)
+
