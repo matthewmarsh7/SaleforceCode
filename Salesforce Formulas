@@ -9,3 +9,46 @@ IsEscalated=TRUE&&
 (ISPICKVAL(Status, "Closed")) ||
 (IsClosedOnCreate=True)
 
+
+//Say that your goal is to ensure 
+//that if anyone other than a System Administrator marks an opportunity as “Closed Lost,” they have to provide an explanation.
+//For this example, we assume that you already have the custom picklist field, Loss Reason, 
+//populated with valid reasons for losing an opportunity.
+
+AND(
+  $Profile.Name <> "System Administrator",
+  ISCHANGED(StageName),
+  ISPICKVAL(StageName, "Closed Lost"),
+  ISPICKVAL(Loss_Reason__c, "")
+)
+
+// write a formula that dynamically assigns a rating to a lead based on the country, revenue, and source.
+
+IF(
+  AND(AnnualRevenue > 1000000,
+  CONTAINS(CASE(Country, "United States", "US", "America",
+    "US", "USA", "US", "US", "US", "NA"), "US")),
+  IF(
+    ISPICKVAL(LeadSource, "Partner Referral"), "Hot",
+    IF(
+      OR(
+        ISPICKVAL(LeadSource, "Purchased List"),
+        ISPICKVAL(LeadSource, "Web")
+      ), "Warm”, "Cold"
+    )
+  ), "Cold"
+)
+
+
+//This validation rule formula returns true if an opportunity’s Close Date is not in the current month
+
+NOT( 
+  AND( 
+    MONTH( CloseDate ) = MONTH( TODAY() ), 
+    YEAR( CloseDate ) = YEAR( TODAY() ) 
+  ) 
+)
+
+//
+
+
