@@ -28,3 +28,12 @@ Account acct2 = new Account(
     BillingCity='Los Angeles',
     Description='Expert in wing technologies.');
 insert acct2;
+
+//Another possibility for an account factory 
+
+for (Integer i = 1; i <= 10; i++) {
+Account acc = new Account(); 
+acc.Name   = 'SDFC' + i; 
+acc.Website = 'SDFC' + i + '.com'
+acc.Phone = '435-345-4353' + i;
+}
