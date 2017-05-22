@@ -30,3 +30,24 @@ trigger WarrantySummary on Case (before insert) {
 	}
     
 }
+
+
+//Below is the associasted trigger test method 
+
+@istest
+private class WarrantySummaryTest {
+    
+    @istest static void createCase() {
+        
+   
+        Case myCase = new Case();
+        
+    	myCase.Product_Purchase_Date__c           =  date.today();
+        myCase.Product_Has_Extended_Warranty__c   = true;
+        myCase.Product_Total_Warranty_Days__c     = 25;
+    
+    insert myCase;
+    
+    }
+}
+
