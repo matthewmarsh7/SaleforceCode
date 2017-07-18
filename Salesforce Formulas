@@ -9,8 +9,9 @@ IsEscalated=TRUE&&
 (ISPICKVAL(Status, "Closed")) ||
 (IsClosedOnCreate=True)
 
+*****************************************************************************************************************************
 
-//Say that your goal is to ensure 
+//Your goal is to ensure 
 //that if anyone other than a System Administrator marks an opportunity as “Closed Lost,” they have to provide an explanation.
 //For this example, we assume that you already have the custom picklist field, Loss Reason, 
 //populated with valid reasons for losing an opportunity.
@@ -21,6 +22,8 @@ AND(
   ISPICKVAL(StageName, "Closed Lost"),
   ISPICKVAL(Loss_Reason__c, "")
 )
+
+*****************************************************************************************************************************
 
 // write a formula that dynamically assigns a rating to a lead based on the country, revenue, and source.
 
@@ -39,6 +42,7 @@ IF(
   ), "Cold"
 )
 
+*****************************************************************************************************************************
 
 //This validation rule formula returns true if an opportunity’s Close Date is not in the current month
 
@@ -50,5 +54,19 @@ NOT(
 )
 
 //
+
+*****************************************************************************************************************************
+
+//This text formula displays a series of colored icons based on urgency. the link to the native salesforce icons:
+//   http://free-121d5f44d20-121d603d1c5-121ee2b8103.force.com/force2b/salesforceicons
+
+IF(CC_LOD_Countdown_Timer__c < 2, 
+IMAGE("/img/msg_icons/error24.png", "red"),
+IF(CC_LOD_Countdown_Timer__c < 4,
+IMAGE("/img/msg_icons/warning24.png", "yellow"),
+IMAGE("/img/msg_icons/confirm24.png", "green")
+))
+
+*****************************************************************************************************************************
 
 
